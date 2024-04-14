@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="48"
+   height="48"
+   viewBox="0 0 12.7 12.7"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="UnderpassAdjustment.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#000000"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:zoom="11.816274"
+     inkscape:cx="16.079519"
+     inkscape:cy="29.366279"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1672"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid298" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#ffffff;stroke-width:0"
+       d="m 1.3210947,7.2912616 c 5.0559713,2.6220056 5.0487447,2.6432436 9.7626673,0"
+       id="path358"
+       sodipodi:nodetypes="cc" />
+    <rect
+       style="fill:#ffffff;stroke-width:0"
+       id="rect510"
+       width="3.9520891"
+       height="2.3815794"
+       x="1.3434862"
+       y="-7.2959785"
+       transform="scale(1,-1)" />
+    <rect
+       style="fill:#ffffff;stroke-width:0"
+       id="rect512"
+       width="3.8289361"
+       height="2.3920972"
+       x="7.2324333"
+       y="-7.3014183"
+       ry="0"
+       transform="scale(1,-1)" />
+    <rect
+       style="fill:#ffffff;stroke-width:0"
+       id="rect514"
+       width="0.033587154"
+       height="0.0050787637"
+       x="10.647128"
+       y="-7.0982685"
+       transform="scale(1,-1)" />
+  </g>
+</svg>
