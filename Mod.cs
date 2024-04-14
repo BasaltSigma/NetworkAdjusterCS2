@@ -70,14 +70,12 @@ namespace NetworkAdjusterCS2
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_activeSettings));
             AssetDatabase.global.LoadSettings(nameof(NetworkAdjusterCS2), m_activeSettings, new Setting(this));
 
-#if DEBUG
-            updateSystem.World.GetOrCreateSystem<PickerToolSystem>();
-            updateSystem.UpdateAt<PickerToolSystem>(SystemUpdatePhase.ToolUpdate);
-#endif
+            updateSystem.World.GetOrCreateSystem<AdjusterToolSystem>();
+            updateSystem.UpdateAt<AdjusterToolSystem>(SystemUpdatePhase.ToolUpdate);
 
-            AdjustmentManager.Install();
+            // set up and register mod
+            AdjustmentManager.Install(updateSystem);
             UIManager.defaultUISystem.AddHostLocation(MOD_ICONS_ID, m_assemblyPath + "/Icons/");
-
         }
 
         /// <summary>
