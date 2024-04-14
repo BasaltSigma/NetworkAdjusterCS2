@@ -14,14 +14,29 @@ namespace NetworkAdjusterCS2.Code
             new AdjusterUpgradeModel
             {
                 Id = "OverpassAdjustment",
+                m_SetUpgradeFlags = new CompositionFlags()
+                {
+                    m_General = CompositionFlags.General.Edge,
+                    m_Right = CompositionFlags.Side.WideSidewalk | CompositionFlags.Side.PrimaryBeautification | CompositionFlags.Side.Lowered
+                },
             },
             new AdjusterUpgradeModel
             {
                 Id = "UnderpassAdjustment",
+                m_SetUpgradeFlags = new CompositionFlags()
+                {
+                    m_General = CompositionFlags.General.Edge,
+                    m_Right = CompositionFlags.Side.WideSidewalk | CompositionFlags.Side.PrimaryBeautification | CompositionFlags.Side.Lowered
+                },
             },
             new AdjusterUpgradeModel
             {
                 Id = "SlopeAdjustment",
+                m_SetUpgradeFlags = new CompositionFlags()
+                {
+                    m_General = CompositionFlags.General.Edge,
+                    m_Right = CompositionFlags.Side.WideSidewalk | CompositionFlags.Side.PrimaryBeautification | CompositionFlags.Side.Lowered
+                },
             }
         };
     }
@@ -29,6 +44,11 @@ namespace NetworkAdjusterCS2.Code
     internal class AdjusterUpgradeModel
     {
         public string Id
+        {
+            get; set;
+        }
+
+        public CompositionFlags m_SetUpgradeFlags
         {
             get; set;
         }

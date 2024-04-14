@@ -52,8 +52,9 @@ namespace NetworkAdjusterCS2.Code
             {
                 m_prefabSytsem.GetType().GetField("m_Prefabs").GetValue(prefabs);
             }
-            catch
+            catch (Exception exc)
             {
+                Mod.log.Error($"{logHeader} Error thrown when getting prefabs: {exc.Message}");
                 prefabs = null;
             }
             if (prefabs == null)
@@ -96,11 +97,10 @@ namespace NetworkAdjusterCS2.Code
                     Mod.log.Error($"{logHeader} [{adjusterMode.Id}] failed adding the cloned prefab to PrefabSystem, exiting.");
                     return;
                 }
-
-                GameManager.instance.onGameLoadingComplete += OnGameLoadingComplete;
-                installed = true;
-                Mod.log.Info($"{logHeader} Installation completed successfully");
             }
+            GameManager.instance.onGameLoadingComplete += OnGameLoadingComplete;
+            installed = true;
+            Mod.log.Info($"{logHeader} Installation completed successfully");
         }
 
         private static void OnGameLoadingComplete(Purpose purpose, GameMode mode)
@@ -119,8 +119,54 @@ namespace NetworkAdjusterCS2.Code
             }
 
             List<PrefabBase> prefabs = null;
-            m_prefabSytsem.GetType().GetField("m_Prefabs").GetValue(prefabs);
+            try
+            {
+                m_prefabSytsem.GetType().GetField("m_Prefabs").GetValue(prefabs);
+            }
+            catch (Exception exc) 
+            {
+                Mod.log.Error($"{logHeader} Error thrown retreving prefabs list: {exc.Message}");
+                prefabs = null;
+            }
+            if (prefabs == null)
+            {
+                Mod.log.Error($"{logHeader} Failed retreving Prefabs list, exiting.");
+                return;
+            }
 
+            var grassUpgradePrefab = prefabs.FirstOrDefault(p => p.name.Equals("Grass"));
+            if (grassUpgradePrefab == null)
+            {
+                Mod.log.Error($"{logHeader} Failed retreiving original grass prefab instance, exiting.");
+                return;
+            }
+
+            var grassUpgradePrefabData = m_prefabSytsem.GetComponentData<PlaceableNetData>(grassUpgradePrefab);
+            if (grassUpgradePrefabData.Equals(default(PlaceableNetData)))
+            {
+                Mod.log.Error($"{logHeader} Failed retreiving original prefab's PlaceableNetData instance, exiting.");
+                return;
+            }
+
+            foreach (var adjustmentMode in AdjusterUpgrades.Modes)
+            {
+                var clonedGrassUpgradePrefab = prefabs.FirstOrDefault(p => p.name.Equals(adjustmentMode.Id));
+                if (clonedGrassUpgradePrefab == null)
+                {
+                    Mod.log.Error($"{logHeader} [{adjustmentMode.Id}] Failed retrieving cloned grass prefab instance, exiting.");
+                    return;
+                }
+                var clonedGrassUpgradePrefabData = m_prefabSytsem.GetComponentData<PlaceableNetData>(clonedGrassUpgradePrefab);
+                if (clonedGrassUpgradePrefabData.Equals(default(PlaceableNetData)))
+                {
+                    Mod.log.Error($"{logHeader} [{adjustmentMode.Id}] Failed retreving cloned prefab's PlaceableNetDat, exiting.");
+                    return;
+                }
+                clonedGrassUpgradePrefabData.m_SetUpgradeFlags = adjustmentMode.m_SetUpgradeFlags;
+                m_prefabSytsem.AddComponentData(clonedGrassUpgradePrefab, clonedGrassUpgradePrefabData);
+            }
+            postInstalled = true;
+            Mod.log.Info($"{logHeader} Post installation completed.");
         }
     }
 }
