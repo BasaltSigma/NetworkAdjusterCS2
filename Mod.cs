@@ -8,6 +8,7 @@ using System.Reflection;
 using System.IO;
 using NetworkAdjusterCS2.Code;
 using Unity.Entities;
+using HarmonyLib;
 
 namespace NetworkAdjusterCS2
 {
@@ -22,29 +23,6 @@ namespace NetworkAdjusterCS2
         public const string MOD_NAME = "Network Adjuster";
         public const string MOD_ICONS_ID = "nacs2";
 
-        private string s_assemblyPath = null;
-
-        public static Mod Instance { get; private set; }
-
-        public string m_assemblyPath
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(s_assemblyPath))
-                {
-                    string assemblyName = Assembly.GetExecutingAssembly().FullName;
-                    ExecutableAsset modAsset = AssetDatabase.global.GetAsset(SearchFilter<ExecutableAsset>.ByCondition(x => x.definition?.FullName.Equals(assemblyName) ?? false));
-                    if (modAsset is null)
-                    {
-                        log.Error("Mod executable asset was not found");
-                        return null;
-                    }
-                    s_assemblyPath = Path.GetDirectoryName(modAsset.GetMeta().path);
-                }
-                return s_assemblyPath;
-            }
-        }
-
         public static ILog log = LogManager.GetLogger($"{nameof(NetworkAdjusterCS2)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
         internal Setting m_activeSettings { get; private set; }
 
@@ -55,7 +33,6 @@ namespace NetworkAdjusterCS2
         {
             log.Info(nameof(OnLoad));
 
-            Instance = this;
             log.Info($"Loading {MOD_NAME} version {Assembly.GetExecutingAssembly().GetName().Version}");
 
             if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
