@@ -4,3 +4,6 @@
 /obj/
 
 Library/
+NetworkAdjusterCS2UI/node_modules/
+NetworkAdjusterCS2UI/types/
+NetworkAdjusterCS2UI/tools/

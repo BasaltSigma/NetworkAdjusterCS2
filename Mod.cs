@@ -7,6 +7,7 @@ using Game.SceneFlow;
 using System.Reflection;
 using System.IO;
 using NetworkAdjusterCS2.Code;
+using Unity.Entities;
 
 namespace NetworkAdjusterCS2
 {
@@ -62,20 +63,11 @@ namespace NetworkAdjusterCS2
                 log.Info($"Current mod asset at {asset.path}");
             }
 
-            UIManager.defaultUISystem.AddHostLocation("uil", m_assemblyPath + "/Icons/");
-
             // create and configure settings
             m_activeSettings = new Setting(this);
             m_activeSettings.RegisterInOptionsUI();
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_activeSettings));
             AssetDatabase.global.LoadSettings(nameof(NetworkAdjusterCS2), m_activeSettings, new Setting(this));
-
-            updateSystem.World.GetOrCreateSystem<AdjusterToolSystem>();
-            updateSystem.UpdateAt<AdjusterToolSystem>(SystemUpdatePhase.ToolUpdate);
-
-            // set up and register mod
-            AdjustmentManager.Install(updateSystem);
-            UIManager.defaultUISystem.AddHostLocation(MOD_ICONS_ID, m_assemblyPath + "/Icons/");
         }
 
         /// <summary>

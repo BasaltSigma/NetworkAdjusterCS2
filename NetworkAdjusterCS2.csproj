@@ -22,15 +22,6 @@
 	<!--Imports must be after PropertyGroup block-->
 	<Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.props" />
 	<Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.targets" />
-	<ItemGroup>
-	  <None Remove="Icons\OverpassAdjustment.svg" />
-	  <None Remove="Icons\SlopeAdjustment.svg" />
-	  <None Remove="Icons\UnderpassAdjustment.svg" />
-	</ItemGroup>
-	<ItemGroup>
-	  <EmbeddedResource Include="Icons\OverpassAdjustment.svg" />
-	  <EmbeddedResource Include="Icons\UnderpassAdjustment.svg" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="Colossal.AssetPipeline">
@@ -100,5 +91,8 @@
 	<ItemGroup>
 	  <EmbeddedResource Include="Icons\SlopeAdjustment.svg" />
 	</ItemGroup>
-
+	
+	<Target Name="BuildUI" AfterTargets="AfterBuild">
+    		<Exec Command="npm run build" WorkingDirectory="$(ProjectDir)/NetworkAdjusterCS2UI" />
+	</Target>
 </Project>

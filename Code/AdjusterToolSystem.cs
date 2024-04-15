@@ -15,6 +15,7 @@ using UnityEngine.Scripting;
 using Unity.Jobs;
 using Unity.Collections;
 using Unity.Burst.Intrinsics;
+using System.Runtime.CompilerServices;
 
 namespace NetworkAdjusterCS2.Code
 {
@@ -23,6 +24,7 @@ namespace NetworkAdjusterCS2.Code
         private ToolOutputBarrier m_toolOutputBarrier;
         private ToolSystem m_toolSystem;
         private EntityQuery m_UpdatedQuery;
+        private TypeHandle __TypeHandle;
 
         private bool canUpdate;
         private PrefabBase currentNetPrefab;
@@ -50,6 +52,7 @@ namespace NetworkAdjusterCS2.Code
             canUpdate = currentTool is NetToolSystem && AdjusterUpgrades.Modes.Any(m => m.Id.Equals(currentNetPrefab?.name));
         }
 
+        [Preserve]
         protected override void OnCreate()
         {
             base.OnCreate();
@@ -78,11 +81,14 @@ namespace NetworkAdjusterCS2.Code
             m_UpdatedQuery.AddChangedVersionFilter(ComponentType.ReadOnly<Temp>());
             RequireForUpdate(m_UpdatedQuery);
 
+            
+
             m_toolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
             m_toolSystem.EventToolChanged += (Action<ToolBaseSystem>)Delegate.Combine(m_toolSystem.EventToolChanged, new Action<ToolBaseSystem>(OnToolChanged));
             m_toolSystem.EventPrefabChanged += (Action<PrefabBase>)Delegate.Combine(m_toolSystem.EventPrefabChanged, new Action<PrefabBase>(OnPrefabChanged));
         }
 
+        [Preserve]
         protected override void OnUpdate()
         {
             if (!canUpdate || m_UpdatedQuery.IsEmpty)
@@ -90,7 +96,12 @@ namespace NetworkAdjusterCS2.Code
                 return;
             }
 
-            
+            var networkAdjustmentJob = default(AdjusterUpdateFixerJob);
+            networkAdjustmentJob.m_commandBuffer = m_toolOutputBarrier.CreateCommandBuffer();
+
+            var jobHandle = networkAdjustmentJob.Schedule(m_UpdatedQuery, Dependency);
+            m_toolOutputBarrier.AddJobHandleForProducer(jobHandle);
+            Dependency = jobHandle;
         }
 
         protected override void OnDestroy()
@@ -110,10 +121,42 @@ namespace NetworkAdjusterCS2.Code
             CurrentNetTool = _toolSystem;
         }
 
+        protected override void OnCreateForCompiler()
+        {
+            base.OnCreateForCompiler();
+            __AssignQueries(ref CheckedStateRef);
+            __TypeHandle.__AssignHandles(ref CheckedStateRef);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void __AssignQueries(ref SystemState state) { }
+
+        private struct TypeHandle
+        {
+            [ReadOnly] public EntityTypeHandle __Unity_Entities_Entity_TypeHandle;
+            [ReadOnly] public ComponentTypeHandle<Edge> __Game_Net_Edge_RO_ComponentTypeHandle;
+            [ReadOnly] public ComponentLookup<Edge> __Game_Net_Edge_RO_ComponentLookup;
+            [ReadOnly] public ComponentLookup<Node> __Game_Net_Node_RO_ComponentLookup;
+            public ComponentLookup<NetCompositionData> __Game_Net_Composition_Data_RW_ComponentLookup;
+            public ComponentLookup<Composition> __Game_Composition_Data_RW_ComponentLookup;
+            public BufferLookup<ConnectedEdge> __Game_Net_ConnectedEdge_RW_BufferLookup;
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void __AssignHandles(ref SystemState state)
+            {
+                __Unity_Entities_Entity_TypeHandle = state.GetEntityTypeHandle();
+                __Game_Net_Edge_RO_ComponentTypeHandle = state.GetComponentTypeHandle<Edge>(true);
+                __Game_Net_Edge_RO_ComponentLookup = state.GetComponentLookup<Edge>(true);
+                __Game_Net_Node_RO_ComponentLookup = state.GetComponentLookup<Node>(true);
+                __Game_Net_ConnectedEdge_RW_BufferLookup = state.GetBufferLookup<ConnectedEdge>(true);
+                __Game_Composition_Data_RW_ComponentLookup = state.GetComponentLookup<Composition>(false);
+                __Game_Net_Composition_Data_RW_ComponentLookup = state.GetComponentLookup<NetCompositionData>(false);
+            }
+        }
+
         private struct AdjusterUpdateFixerJob : IJobChunk
         {
-            [ReadOnly]
-            public EntityTypeHandle m_entityType;
+            [ReadOnly] public EntityTypeHandle m_entityType;
             [ReadOnly] public ComponentTypeHandle<Edge> m_edgeType;
             [ReadOnly] public ComponentLookup<Edge> m_edgeData;
             [ReadOnly] public ComponentLookup<Composition> m_compositionData;

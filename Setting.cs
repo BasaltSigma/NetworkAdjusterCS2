@@ -22,6 +22,7 @@ namespace NetworkAdjusterCS2
             
         }
     }
+
     public class LocaleEN : IDictionarySource
     {
         private readonly Setting m_Setting;
@@ -33,7 +34,7 @@ namespace NetworkAdjusterCS2
         {
             return new Dictionary<string, string>
             {
-                
+                { m_Setting.GetSettingsLocaleID(), "Network Adjuster Mod" },
             };
         }
 
