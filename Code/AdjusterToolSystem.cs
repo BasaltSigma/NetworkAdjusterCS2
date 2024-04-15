@@ -18,7 +18,7 @@ using Unity.Burst.Intrinsics;
 
 namespace NetworkAdjusterCS2.Code
 {
-    internal class AdjusterToolSystem : GameSystemBase
+    internal partial class AdjusterToolSystem : GameSystemBase
     {
         private ToolOutputBarrier m_toolOutputBarrier;
         private ToolSystem m_toolSystem;
@@ -35,6 +35,7 @@ namespace NetworkAdjusterCS2.Code
                 UpdateCanUpdate();
             }
         }
+
         private ToolBaseSystem CurrentNetTool
         {
             set
