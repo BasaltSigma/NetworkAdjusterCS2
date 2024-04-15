@@ -83,7 +83,7 @@ namespace NetworkAdjusterCS2
         /// </summary>
         public void OnDispose()
         {
-            log.Info(nameof(OnDispose));
+            log.Info($"{MOD_NAME}: {nameof(OnDispose)}");
             if (m_activeSettings != null)
             {
                 m_activeSettings.UnregisterInOptionsUI();

@@ -26,6 +26,8 @@ namespace NetworkAdjusterCS2.Code
         internal static void Install(UpdateSystem updateSystem)
         {
             var logHeader = $"[{nameof(AdjustmentManager)}.{nameof(Install)}]";
+
+            // exit if already installed
             if (installed)
             {
                 Mod.log.Info($"{logHeader} Mod is installed, skipping");
@@ -33,6 +35,7 @@ namespace NetworkAdjusterCS2.Code
             }
             Mod.log.Info($"{logHeader} Installing Mod");
 
+            // get and check world
             world = updateSystem.World;
             if (world == null)
             {
@@ -40,6 +43,7 @@ namespace NetworkAdjusterCS2.Code
                 return;
             }
 
+            // get and check prefab system
             m_prefabSytsem = world.GetExistingSystemManaged<PrefabSystem>();
             if (m_prefabSytsem == null)
             {
@@ -47,6 +51,7 @@ namespace NetworkAdjusterCS2.Code
                 return;
             }
 
+            // get and check the prefabs base list using reflection
             List<PrefabBase> prefabs = null;
             try
             {
@@ -63,6 +68,7 @@ namespace NetworkAdjusterCS2.Code
                 return;
             }
 
+            // get and check the grass upgrade prefab
             var grassUpgradePrefab = prefabs.FirstOrDefault(p => p.name.Equals("Grass"));
             if (grassUpgradePrefab == null)
             {
@@ -70,6 +76,7 @@ namespace NetworkAdjusterCS2.Code
                 return;
             }
 
+            // get and check the ui object of the grass upgrade prefab
             var grassUpgradePrefabUIObject = grassUpgradePrefab.GetComponent<UIObject>();
             if (grassUpgradePrefabUIObject == null)
             {
@@ -77,12 +84,15 @@ namespace NetworkAdjusterCS2.Code
                 return;
             }
 
+            // iterate through all tools we have and apply the settings/icon/name accordingly
             foreach (var adjusterMode in AdjusterUpgrades.Modes)
             {
+                // clone the prefab and set the name, also remove the previous UIObject script
                 var clonedGrassUpgradePrefab = GameObject.Instantiate(grassUpgradePrefab);
                 clonedGrassUpgradePrefab.name = adjusterMode.Id;
                 clonedGrassUpgradePrefab.Remove<UIObject>();
 
+                // create a new UIObject component with icon and name with previous properties
                 var clonedGrassUpgradeUIObject = ScriptableObject.CreateInstance<UIObject>();
                 clonedGrassUpgradeUIObject.m_Icon = $"{COUI_BASE_LOCATION}/{adjusterMode.Id}.svg";
                 clonedGrassUpgradeUIObject.name = grassUpgradePrefabUIObject.name.Replace("Grass", adjusterMode.Id);
@@ -91,6 +101,7 @@ namespace NetworkAdjusterCS2.Code
                 clonedGrassUpgradeUIObject.m_Group = grassUpgradePrefabUIObject.m_Group;
                 clonedGrassUpgradeUIObject.active = grassUpgradePrefabUIObject.active;
 
+                // add the cloned prefab to the prefab system and check
                 clonedGrassUpgradePrefab.AddComponentFrom(clonedGrassUpgradeUIObject);
                 if (!m_prefabSytsem.AddPrefab(clonedGrassUpgradePrefab))
                 {
@@ -98,6 +109,8 @@ namespace NetworkAdjusterCS2.Code
                     return;
                 }
             }
+
+            // clean up and bind the callback for when the game has loaded
             GameManager.instance.onGameLoadingComplete += OnGameLoadingComplete;
             installed = true;
             Mod.log.Info($"{logHeader} Installation completed successfully");

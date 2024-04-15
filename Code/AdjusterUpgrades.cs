@@ -17,7 +17,6 @@ namespace NetworkAdjusterCS2.Code
                 m_SetUpgradeFlags = new CompositionFlags()
                 {
                     m_General = CompositionFlags.General.Edge,
-                    m_Right = CompositionFlags.Side.WideSidewalk | CompositionFlags.Side.PrimaryBeautification | CompositionFlags.Side.Lowered
                 },
             },
             new AdjusterUpgradeModel
@@ -26,7 +25,6 @@ namespace NetworkAdjusterCS2.Code
                 m_SetUpgradeFlags = new CompositionFlags()
                 {
                     m_General = CompositionFlags.General.Edge,
-                    m_Right = CompositionFlags.Side.WideSidewalk | CompositionFlags.Side.PrimaryBeautification | CompositionFlags.Side.Lowered
                 },
             },
             new AdjusterUpgradeModel
@@ -35,7 +33,6 @@ namespace NetworkAdjusterCS2.Code
                 m_SetUpgradeFlags = new CompositionFlags()
                 {
                     m_General = CompositionFlags.General.Edge,
-                    m_Right = CompositionFlags.Side.WideSidewalk | CompositionFlags.Side.PrimaryBeautification | CompositionFlags.Side.Lowered
                 },
             }
         };
