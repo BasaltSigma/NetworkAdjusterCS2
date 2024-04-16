@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.Entities;
+using Unity.Jobs;
 using UnityEngine;
 
 namespace NetworkAdjusterCS2.Code
@@ -40,12 +41,11 @@ namespace NetworkAdjusterCS2.Code
 
         protected override void OnCreate()
         {
-            Enabled = false;
             m_applyAction = InputManager.instance.FindAction("Tool", "Apply");
             m_secondaryApplyAction = InputManager.instance.FindAction("Tool", "Secondary Apply");
 
-            
             base.OnCreate();
+            Enabled = false;
         }
 
         protected override void OnStartRunning()
@@ -58,6 +58,11 @@ namespace NetworkAdjusterCS2.Code
         {
             m_applyAction.shouldBeEnabled = false;
             m_secondaryApplyAction.shouldBeEnabled = false;
+        }
+
+        protected override JobHandle OnUpdate(JobHandle inputDeps)
+        {
+            return base.OnUpdate(inputDeps);
         }
 
         #region Raycasting

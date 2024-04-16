@@ -1,0 +1,4 @@
+Assets.NAME[OverpassAdjustment],Create Overpass
+Assets.DESCRIPTION[OverpassAdjustment],"Creates an overpass on the section of network provided by elevating the middle and reforming the network piece to appropraite forms (retaining walls, raised, etc.)"
+Assets.NAME[UnderpassAdjustment],Create Underpass
+Assets.DESCRIPTION[UnderpassAdjustment],"Creates an underpass on the section of network provided by lowering the middle and reforming the network piece to appropraite forms (lowered, tunnel, etc.)"
