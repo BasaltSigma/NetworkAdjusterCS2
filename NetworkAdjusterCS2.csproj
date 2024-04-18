@@ -28,6 +28,10 @@
 		  <HintPath>D:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Colossal.AssetPipeline.dll</HintPath>
 		  <Private>False</Private>
 		</Reference>
+		<Reference Include="Colossal.Mathematics">
+		  <HintPath>D:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Colossal.Mathematics.dll</HintPath>
+		  <Private>False</Private>
+		</Reference>
 		<Reference Include="Colossal.Mono.Cecil">
 		  <HintPath>D:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Colossal.Mono.Cecil.dll</HintPath>
 		  <Private>False</Private>

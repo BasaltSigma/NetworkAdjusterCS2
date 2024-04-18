@@ -22,7 +22,7 @@ namespace NetworkAdjusterCS2.Code
         private ProxyAction m_applyAction;
         private ProxyAction m_secondaryApplyAction;
         private NetPrefab m_prefab;
-        
+
         public override PrefabBase GetPrefab()
         {
             return m_prefab;

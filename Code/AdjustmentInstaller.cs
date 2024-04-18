@@ -11,6 +11,10 @@ using Game.SceneFlow;
 using UnityEngine;
 using Colossal.Serialization.Entities;
 using Colossal.Logging;
+using Game.Tools;
+using Colossal.UI;
+using Game.UI;
+using Colossal.UI.Binding;
 
 namespace NetworkAdjusterCS2.Code
 {
@@ -54,7 +58,7 @@ namespace NetworkAdjusterCS2.Code
             }
 
             // clone off the grass upgrade prefab
-            var grassUpgradePrefab = prefabs.FirstOrDefault(p => p.name == "Grass");
+            var grassUpgradePrefab = prefabs.FirstOrDefault(p => p.name.Equals("Grass"));
             if (grassUpgradePrefab == null)
             {
                 Mod.log.Error($"{logHeader} Failed retrieving grass upgrade prefab, exiting");
@@ -103,6 +107,31 @@ namespace NetworkAdjusterCS2.Code
                 return;
             }
 
+            var prefabs = Traverse.Create(s_prefabSystem).Field<List<PrefabBase>>("m_Prefabs").Value;
+            if (prefabs == null || !prefabs.Any())
+            {
+                Mod.log.Error($"{logHeader} failed getting prefab base list, exiting.");
+            }
+
+            foreach (var modeID in AdjustmentToolData.toolIDs)
+            {
+                var clonedPrefab = prefabs.FirstOrDefault(pfb => pfb.name.Equals(modeID));
+                if (clonedPrefab == null)
+                {
+                    Mod.log.Error($"{logHeader} Failed retreving our own prefab of id {modeID}, exiting");
+                    return;
+                }
+#if DEBUG
+                List<string> prefabComponentNames = DebugUtils.GetAllComponentNamesOfPrefab(clonedPrefab);
+                foreach (string s in prefabComponentNames)
+                {
+                    Mod.log.Info($"{logHeader} Found component of type {s} on {clonedPrefab.GetType().Name}");
+                }
+#endif
+
+                s_prefabSystem.RemoveComponent<PlaceableNetData>(clonedPrefab);
+
+            }
             postInstalled = true;
             Mod.log.Info($"{logHeader} Post install succesfully completed without any issues");
         }
