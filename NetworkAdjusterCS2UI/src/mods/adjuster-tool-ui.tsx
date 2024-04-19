@@ -12,25 +12,28 @@ const ToolBarButtonTheme: Theme | any = getModule("game-ui/game/components/toolb
 
 const ToolBarTheme: Theme | any = getModule("game-ui/game/components/toolbar/toolbar.module.scss", "classes");
 
-import natIcon from "./NAT_Icon.png";
+import natIconActive from "./NAT_Icon_On.png";
+import natIconOff from "./NAT_Icon_Off.png";
+import styles from "../networkadjuster.module.scss"
 
 export function toggle_NATToolEnabled() {
     console.log("NetworkAdjuster tool icon clicked");
-    trigger(mod.id, 'NAT_ToolEnabled');
+    trigger(mod.id, 'NAT_EnableToggle');
 }
 
 export const NetworkAdjusterButton: ModuleRegistryExtend = (Component) => {
     return (props) => {
         const { children, ...otherProps } = props || {};
         const NAT_ToolEnabled = useValue(NAT_ToolEnabled$);
+        const natIconToUse = NAT_ToolEnabled ? natIconActive : natIconOff;
         return (
             <>
-                <Button>
-                    src={natIcon}
-                    className={ToolBarButtonTheme.button}
+                <Button
+                    src={natIconToUse}
+                    className={ToolBarButtonTheme.button + " " + styles.NetworkAdjusterIcon}
                     variant="icon"
                     selected={NAT_ToolEnabled}
-                    onSelect={toggle_NATToolEnabled}
+                    onSelect={toggle_NATToolEnabled}>
                 </Button>
                 <div className={ToolBarTheme.divider}></div>
                 <Component {...otherProps}></Component>

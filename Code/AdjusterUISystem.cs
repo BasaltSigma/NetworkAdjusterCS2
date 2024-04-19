@@ -11,6 +11,7 @@ namespace NetworkAdjusterCS2.Code
     internal partial class AdjusterUISystem : UISystemBase
     {
         private ValueBinding<bool> _ToolEnabled;
+        protected readonly AdjusterTool _Tool = AdjusterTool.instance;
 
         protected override void OnCreate()
         {
@@ -21,7 +22,13 @@ namespace NetworkAdjusterCS2.Code
 
         private void NAT_EnableToggle()
         {
+            Mod.log.Info("Main tool button has been toggled");
+            
+        }
 
+        protected override void OnUpdate()
+        {
+            _ToolEnabled.Update(_Tool.Enabled);
         }
     }
 }

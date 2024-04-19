@@ -1,0 +1,14 @@
+:root {
+    --size: 42rem;
+}
+
+.NetworkAdjusterIcon {
+    pointer-events: auto;
+    width: var(--size);
+    height: var(--size);
+}
+
+.NetworkAdjusterIcon img {
+    width: var(--size);
+    height: var(--size);
+}
