@@ -27,7 +27,7 @@ namespace NetworkAdjusterCS2
     public sealed class Mod : IMod
     {
         public const string MOD_NAME = "Network Adjuster";
-        public const string MOD_ICONS_ID = "nacs2";
+        public const string MOD_UI = "NetworkAdjusterCS2";
 
         public static ILog log = LogManager.GetLogger($"{nameof(NetworkAdjusterCS2)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
         internal Setting m_activeSettings { get; private set; }
@@ -75,11 +75,8 @@ namespace NetworkAdjusterCS2
             FileInfo fileInfo = new FileInfo(asset.path);
             ResourcesIcons = Path.Combine(fileInfo.DirectoryName, "Icons");
 
-            UIManager.defaultUISystem.AddHostLocation("uil", AssemblyPath + "/Icons/");
-            updateSystem.World.GetOrCreateSystem<AdjusterToolSystem>();
-            updateSystem.UpdateAt<AdjusterToolSystem>(SystemUpdatePhase.ToolUpdate);
-
-            AdjustmentInstaller.Install();
+            updateSystem.UpdateAt<AdjusterTool>(SystemUpdatePhase.ToolUpdate);
+            updateSystem.UpdateAt<AdjusterUISystem>(SystemUpdatePhase.MainLoop);
 
             harmony = new Harmony($"{nameof(NetworkAdjusterCS2)}.{nameof(Mod)}");
             harmony.PatchAll(typeof(Mod).Assembly);
@@ -91,8 +88,8 @@ namespace NetworkAdjusterCS2
 
             // create and configure settings for loading localization
             m_activeSettings = new Setting(this);
+            m_activeSettings.RegisterInOptionsUI();
             Localization.LoadTranslations(m_activeSettings, log);
-            UIManager.defaultUISystem.AddHostLocation(MOD_ICONS_ID, AssemblyPath + "/Icons/");
         }
 
         /// <summary>

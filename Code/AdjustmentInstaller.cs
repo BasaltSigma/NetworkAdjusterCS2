@@ -20,7 +20,7 @@ namespace NetworkAdjusterCS2.Code
 {
     internal static class AdjustmentInstaller
     {
-        private static readonly string COUIBaseLocation = $"coui://{Mod.MOD_ICONS_ID}";
+        private static readonly string COUIBaseLocation = $"coui://{Mod.MOD_UI}";
         private static bool installed = false;
         private static bool postInstalled = false;
 

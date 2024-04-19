@@ -101,10 +101,10 @@
 	<Target Name="CopyIcons" AfterTargets="AfterBuild">
 		<Copy SourceFiles="@(Icons)" DestinationFolder="$(DeployDir)/Icons" />
 	</Target>
-
 	<ItemGroup>
-	  <Folder Include="NetworkAdjusterCS2UI\src\icons\" />
-	  <Folder Include="NetworkAdjusterCS2UI\src\mods\" />
+	  <Compile Remove="NetworkAdjusterCS2UI\src\icons\**" />
+	  <EmbeddedResource Remove="NetworkAdjusterCS2UI\src\icons\**" />
+	  <None Remove="NetworkAdjusterCS2UI\src\icons\**" />
 	</ItemGroup>
 
 	<ItemGroup>
