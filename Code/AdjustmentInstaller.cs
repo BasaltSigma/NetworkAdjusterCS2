@@ -129,8 +129,15 @@ namespace NetworkAdjusterCS2.Code
                 }
 #endif
 
+                // remove unneeded components and their data
                 s_prefabSystem.RemoveComponent<PlaceableNetData>(clonedPrefab);
-
+                s_prefabSystem.RemoveComponent<ServiceObjectData>(clonedPrefab);
+                s_prefabSystem.RemoveComponent<NetObjectData>(clonedPrefab);
+                clonedPrefab.Remove<ServiceObject>();
+                clonedPrefab.Remove<PlaceableNet>();
+                clonedPrefab.Remove<Unlockable>();
+                clonedPrefab.Remove<NetUpgrade>();
+                clonedPrefab.Remove<NetObject>();
             }
             postInstalled = true;
             Mod.log.Info($"{logHeader} Post install succesfully completed without any issues");

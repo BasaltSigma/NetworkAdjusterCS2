@@ -19,6 +19,7 @@ namespace NetworkAdjusterCS2
     /// <item>https://github.com/ST-Apps/CS2-ExtendedRoadUpgrades/tree/master</item>
     /// <item>https://github.com/AlphaGaming7780/ExtraLib</item>
     /// <item>https://github.com/kosch104/CS2-ExtraNetworksAndAreas</item>
+    /// <item>https://github.com/Quboid/CS2-MoveIt</item>
     /// </list>
     /// Thank you very much for making your code public on Github, it was very helpful to help me learn the API as no documentation exists
     /// as of writing this. 
